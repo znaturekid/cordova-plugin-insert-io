@@ -22,18 +22,12 @@ cordova platform add android
 
 If you have git installed, run:
 ```
-cordova plugin add https://github.com/InsertIO/cordovaInsert.git
+cordova plugin add https://github.com/znaturekid/cordova-plugin-insert-io.git --save --variable COMPANY_NAME=companyname --variable URL_SCHEMA_IOS=hexvalue --variable API_KEY_FOR_IOS=api_key
 ```
 If git is not installed, download this repository to your machine and run:
 ```
-cordova plugin add <folder-on-your-machine>
+cordova plugin add <folder-on-your-machine> --save --variable COMPANY_NAME=companyname --variable URL_SCHEMA_IOS=hexvalue --variable API_KEY_FOR_IOS=api_key
 ```
-
-* Add the Insert SDK
-
-Open the Insert console and create an app.  then follow the installation instructions to integrate the SDK into your app. Specifically, you have to call the InitSDK function on the native part of your app
-Make sure that once integrated, you see a success message in the Android Studio or XCode logs.
-
 
 How to use
 ==========
