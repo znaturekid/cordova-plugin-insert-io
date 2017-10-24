@@ -1,0 +1,20 @@
+android {
+
+    defaultConfig {
+        multiDexEnabled true
+    }
+ 
+}
+repositories {
+   maven {
+     url "http://software.insert.io/artifactory/android-sdk-externals"
+   } 
+   maven {
+     url "http://software.insert.io/artifactory/android-release"
+   }
+  mavenCentral()
+}
+dependencies {
+    compile 'com.android.support:multidex:1.0.0'
+  	compile group:'sdk.insert.io' , name:'insertIO', version:'1.49.49.+', changing:true
+}

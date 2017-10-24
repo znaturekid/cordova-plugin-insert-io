@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="io.cordova-insert" version="0.1">
+	<name>
+		Insert SDK for Cordova
+	</name>
+	<description>
+		Adds Insert's SDK to Cordova projects
+	</description>
+	<author>
+		Netanel Rabinowitz
+	</author>
+	<license>
+		Apache 2.0
+	</license>
+	<keywords>
+		insert
+	</keywords>
+	<engines>
+		<engine name="cordova" version=">=3.7.0" />
+	</engines>
+	<js-module src="www/Insert.js" name="Insert">
+		<clobbers target="window.plugins.Insert" />
+	</js-module>
+	<!-- <dependency id="cordova-isnertsdk"/> -->
+	<preference name="COMPANY_NAME" />
+	<preference name="URL_SCHEME_IOS" />
+	<preference name="URL_SCHEME_ANDROID" />
+	<preference name="API_KEY_FOR_IOS" />
+	<preference name="API_KEY_FOR_ANDROID" />
+	<platform name="android">
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="Insert">
+				<param name="android-package" value="com.cordova.insert.plugin.Insert" />
+			</feature>
+		</config-file>
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<meta-data android:name="com.cordova.insert.plugin.Insert.API_KEY" android:value="$API_KEY_FOR_ANDROID" />
+			<meta-data android:name="com.cordova.insert.plugin.Insert.COMPANY_NAME" android:value="$COMPANY_NAME" />
+			<activity android:name="sdk.insert.io.activities.InsertGateActivity" android:launchMode="singleInstance">
+				<intent-filter>
+					<action android:name="android.intent.action.VIEW" />
+					<category android:name="android.intent.category.DEFAULT" />
+					<category android:name="android.intent.category.BROWSABLE" />
+					<data android:scheme="insert-$URL_SCHEME_ANDROID" />
+				</intent-filter>
+				<intent-filter>
+					<data android:scheme="$URL_SCHEME_ANDROID" />
+					<category android:name="android.intent.category.DEFAULT" />
+				</intent-filter>
+			</activity>
+		</config-file>
+		<framework src="src/android/InsertPlugin.gradle" custom="true" type="gradleReference" />
+		<source-file src="src/android/Insert.java" target-dir="src/com/cordova/insert/plugin" />
+	</platform>
+	<platform name="ios">
+		<hook type="before_plugin_install" src="scripts/prepareCocoaPods.js" />
+		<config-file target="config.xml" parent="/*">
+			<feature name="Insert">
+				<param name="ios-package" value="CDVInsert" />
+			</feature>
+		</config-file>
+		<header-file src="src/ios/AppDelegate+InsertPlugin.h" />
+		<source-file src="src/ios/AppDelegate+InsertPlugin.m" />
+		<header-file src="src/ios/CDVInsert.h" />
+		<source-file src="src/ios/CDVInsert.m" />
+		<framework src="Insert" type="podspec" spec="~> 1.49.0" />
+		<config-file target="*-Info.plist" parent="CFBundleURLTypes">
+			<array>
+				<dict>
+					<key>CFBundleURLName</key>
+					<string>insert-$COMPANY_NAME</string>
+					<key>CFBundleURLSchemes</key>
+					<array>
+						<string>insert-$URL_SCHEME_IOS</string>
+					</array>
+				</dict>
+			</array>
+		</config-file>
+		<config-file target="*-Info.plist" parent="Insert IOS Key">
+			<string>$API_KEY_FOR_IOS</string>
+		</config-file>
+		<config-file target="*-Info.plist" parent="Company Name">
+			<string>$COMPANY_NAME</string>
+		</config-file>
+	</platform>
+</plugin>

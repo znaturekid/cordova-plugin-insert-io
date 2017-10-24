@@ -1,0 +1,98 @@
+package com.cordova.insert.plugin;
+
+import android.app.Activity;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import static sdk.insert.io.Insert.dismissVisibleInserts;
+import static sdk.insert.io.Insert.eventOccurred;
+import static sdk.insert.io.Insert.initSDK;
+import static sdk.insert.io.Insert.setPushId;
+import static sdk.insert.io.Insert.setUserAttributes;
+import static sdk.insert.io.Insert.setVisitorId;
+import static sdk.insert.io.Insert.setAccountId;
+
+
+public class Insert extends CordovaPlugin {
+	@Override
+	protected void pluginInitialize() {
+		super.pluginInitialize();
+		Activity activity = cordova.getActivity();
+		ApplicationInfo appliInfo = null;
+		try {
+			appliInfo = activity.getPackageManager().getApplicationInfo(activity.getPackageName(), PackageManager.GET_META_DATA);
+		} catch (PackageManager.NameNotFoundException e) {}
+
+		String API_KEY = appliInfo.metaData.getString("com.cordova.insert.plugin.Insert.API_KEY");
+		String COMPANY_NAME = appliInfo.metaData.getString("com.cordova.insert.plugin.Insert.COMPANY_NAME");
+		initSDK(activity.getApplication(), API_KEY, COMPANY_NAME, null);
+	}
+	@Override
+	public boolean execute(String action, JSONArray inputs, CallbackContext callbackContext) throws JSONException {
+		if (action.equals("dismissVisibleInserts")) {
+			dismissVisibleInserts();
+		} else if (action.equals("setPushId")) {
+			if (inputs.length() > 0) {
+			setPushId(inputs.get(0).toString());
+			}
+		} else if (action.equals("setUserAttributes")) {
+            setUserAttributes(toMap(inputs.getJSONObject(0)));
+            callbackContext.success();
+        } else if (action.equals("eventOccurred")) {
+			if (inputs.length() >= 2) {
+				Map<String, String> mapData = new HashMap<String, String>();
+				JSONObject jsonObject = (JSONObject) inputs.get(1);
+				Iterator<String> keysItr = jsonObject.keys();
+				while(keysItr.hasNext()) {
+					String key = keysItr.next();
+					String value = jsonObject.get(key).toString();
+					mapData.put(key, value);
+				}
+				final Map<String, String> finalMap = mapData;
+				final JSONArray finalInputs = inputs;
+				cordova.getThreadPool().execute(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							eventOccurred(finalInputs.get(0).toString(), finalMap);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		} else if (action.equals("setUserId")) {
+            setVisitorId(inputs.getString(0));
+            callbackContext.success();
+		}
+		else if (action.equals("init")) {
+            setVisitorId(inputs.getString(0));
+			setAccountId(inputs.getString(1));
+            callbackContext.success();
+        }
+        else {
+		}
+		return true;
+	}
+
+	private static Map<String, String> toMap(final JSONObject map) throws JSONException {
+        final Map<String, String> result = new HashMap<String, String>(map.length());
+        final Iterator<String> it = map.keys();
+        while (it.hasNext()) {
+            final String key = it.next();
+            result.put(key, map.get(key).toString());
+        }
+        return result;
+    }
+
+}
