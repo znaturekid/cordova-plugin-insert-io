@@ -28,6 +28,7 @@
 	<preference name="API_KEY_FOR_IOS" />
 	<preference name="API_KEY_FOR_ANDROID" />
 	<platform name="android">
+		<uses-permission android:name="android.permission.INTERNET" />
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="Insert">
 				<param name="android-package" value="com.cordova.insert.plugin.Insert" />
@@ -51,6 +52,9 @@
 		</config-file>
 		<framework src="src/android/InsertPlugin.gradle" custom="true" type="gradleReference" />
 		<source-file src="src/android/Insert.java" target-dir="src/com/cordova/insert/plugin" />
+		<source-file src="src/android/InsertApplication.java" target-dir="src/com/cordova/insert/plugin" />
+		<hook type="before_compile" src="scripts/updateManifest.js" />
+    	<hook type="after_platform_add" src="scripts/updateManifest.js" />
 	</platform>
 	<platform name="ios">
 		<hook type="before_plugin_install" src="scripts/prepareCocoaPods.js" />

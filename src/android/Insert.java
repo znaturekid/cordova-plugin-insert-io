@@ -21,22 +21,9 @@ import static sdk.insert.io.Insert.setPushId;
 import static sdk.insert.io.Insert.setUserAttributes;
 import static sdk.insert.io.Insert.setVisitorId;
 import static sdk.insert.io.Insert.setAccountId;
-
+import android.util.Log;
 
 public class Insert extends CordovaPlugin {
-	@Override
-	protected void pluginInitialize() {
-		super.pluginInitialize();
-		Activity activity = cordova.getActivity();
-		ApplicationInfo appliInfo = null;
-		try {
-			appliInfo = activity.getPackageManager().getApplicationInfo(activity.getPackageName(), PackageManager.GET_META_DATA);
-		} catch (PackageManager.NameNotFoundException e) {}
-
-		String API_KEY = appliInfo.metaData.getString("com.cordova.insert.plugin.Insert.API_KEY");
-		String COMPANY_NAME = appliInfo.metaData.getString("com.cordova.insert.plugin.Insert.COMPANY_NAME");
-		initSDK(activity.getApplication(), API_KEY, COMPANY_NAME, null);
-	}
 	@Override
 	public boolean execute(String action, JSONArray inputs, CallbackContext callbackContext) throws JSONException {
 		if (action.equals("dismissVisibleInserts")) {
