@@ -26,12 +26,5 @@ public class InsertApplication extends Application {
             String COMPANY_NAME = appliInfo.metaData.getString("com.cordova.insert.plugin.Insert.COMPANY_NAME");
             initSDK(this, API_KEY, COMPANY_NAME, null);
         } catch (PackageManager.NameNotFoundException e) {}
-        forceMainActivityReload();
-    }
-
-    private void forceMainActivityReload() {
-        PackageManager pm = getPackageManager();
-        Intent launchIntent = pm.getLaunchIntentForPackage(getApplicationContext().getPackageName());
-        startActivity(launchIntent);
     }
 }
