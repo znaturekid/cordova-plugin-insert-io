@@ -2,7 +2,7 @@ package com.cordova.insert.plugin;
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.app.Application;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import static sdk.insert.io.Insert.initSDK;
  * Created by hieumai on 10/25/17.
  */
 
-public class InsertApplication extends Application {
+public class InsertApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
