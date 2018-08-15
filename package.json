@@ -1,9 +1,9 @@
 {
-  "name": "cordovaInsert",
-  "version": "0.1.1",
+  "name": "cordova-plugin-insert",
+  "version": "0.1.2",
   "description": "Adds Insert's SDK to Cordova projects",
   "cordova": {
-    "id": "io.cordova-insert",
+    "id": "cordova-plugin-insert",
     "platforms": [
       "android",
       "ios"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/InsertIO/cordovaInsert.git"
+    "url": "git+https://github.com/znaturekid/cordova-plugin-insert-io.git"
   },
   "keywords": [
     "insert",
@@ -28,7 +28,7 @@
   "author": "night2tl",
   "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/InsertIO/cordovaInsert/issues"
+    "url": "https://github.com/znaturekid/cordova-plugin-insert-io/issues"
   },
-  "homepage": "https://github.com/InsertIO/cordovaInsert#readme"
+  "homepage": "https://github.com/znaturekid/cordova-plugin-insert-io#readme"
 }
